@@ -17,6 +17,7 @@ export interface PredictionResponse {
   trip_id: string;
   gps_trace: LatLon[];
   predicted_route: LatLon[];
+  road_network?: LatLon[][];
   inference_time_ms?: number;
   decoder?: string;
 }
