@@ -98,3 +98,21 @@ GPS row indices to route indices.
 Generated reports and figures are derived artifacts. Keep source code, configuration,
 and experiment metadata in version control. Do not commit fabricated metrics or
 hand-edited experimental outputs.
+
+
+## Evaluator UI
+
+The React + TypeScript + Tailwind + Leaflet evaluator interface is in `frontend/`.
+
+See [frontend/README.md](frontend/README.md) for setup instructions and the FastAPI
+contract. Quick start:
+
+```bash
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+The UI obtains evaluator trip IDs and route predictions from the FastAPI backend at
+runtime. It does not hardcode evaluation IDs, predictions, or ground-truth labels.
