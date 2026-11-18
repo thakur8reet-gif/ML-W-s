@@ -88,7 +88,8 @@ export default function App() {
 
   const gps = result?.gps_trace ?? [];
   const predicted = result?.predicted_route ?? [];
-  const allPoints: LatLngExpression[] = [...gps, ...predicted].map(([lat, lon]) => [lat, lon]);
+  const network = result?.road_network ?? [];
+  const allPoints: LatLngExpression[] = [...gps, ...predicted, ...network.flat()].map(([lat, lon]) => [lat, lon]);
   const center: LatLngExpression = allPoints[0] ?? [20.5937, 78.9629];
 
   return <div className="app-shell">
@@ -178,6 +179,7 @@ export default function App() {
               {result && (gps.length || predicted.length) ? <MapContainer center={center} zoom={13} scrollWheelZoom className="leaflet-map">
                 <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
                 <FitBounds points={allPoints}/>
+                {activeLayer.network && network.map((segment, index) => <Polyline key={`network-${index}`} positions={segment} pathOptions={{ color: "#8997a8", weight: 2, opacity: 0.42 }}/>)}
                 {activeLayer.gps && gps.length > 0 && <Polyline positions={gps.map(([lat, lon]) => [lat, lon])} pathOptions={{ color: "#49a6ff", weight: 3, opacity: 0.9, dashArray: "5 7" }}/ >}
                 {activeLayer.predicted && predicted.length > 0 && <Polyline positions={predicted.map(([lat, lon]) => [lat, lon])} pathOptions={{ color: "#f59e0b", weight: 5, opacity: 0.95 }}/>}
                 {activeLayer.gps && gps.length > 0 && <CircleMarker center={gps[0]} radius={6} pathOptions={{ color: "#22c55e", fillColor: "#22c55e", fillOpacity: 1 }} />}
@@ -193,8 +195,9 @@ export default function App() {
                 {[
                   ["gps", "Observed GPS trace", "blue"],
                   ["predicted", "Predicted route", "orange"],
+                  ["network", "Road network", "grey"],
                 ].map(([key, label, color]) => <label className="layer-row" key={key}><span className={`layer-swatch ${color}`}/><span>{label}</span><input type="checkbox" checked={activeLayer[key as keyof typeof activeLayer]} onChange={(e) => setActiveLayer((old) => ({ ...old, [key]: e.target.checked }))}/></label>)}
-                <div className="layer-row muted-layer"><span className="layer-swatch grey"/><span>Road network</span><span className="layer-note">API data</span></div>
+
               </div>
               <div className="side-divider"/>
               <div className="side-block"><div className="side-title">ROUTE SUMMARY <Activity size={15}/></div>
