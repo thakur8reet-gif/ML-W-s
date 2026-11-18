@@ -56,9 +56,7 @@ export default function App() {
     </header>
     <section className="workspace">
       <div className="intro">
-        <p className="eyebrow">MAP MATCHING / EVALUATION</p>
         <h1>Route reconstruction</h1>
-        <p className="subtitle">Select a trip to reconstruct its path across the road network.</p>
       </div>
       <div className="controls">
         <label htmlFor="trip">TRIP</label>
@@ -74,7 +72,6 @@ export default function App() {
           <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"/>
           <FitBounds points={mapPoints}/>
           {roadNetwork.map((segment, i) => <Polyline key={i} positions={segment} pathOptions={{color:"#666666",weight:2,opacity:.62}}/>)}
-          {gps.length > 1 && <Polyline positions={gps} pathOptions={{color:"#999999",weight:1.5,opacity:.5,dashArray:"3 7"}}/>}
           {route.length > 1 && <Polyline positions={route} pathOptions={{color:"#F2EBDD",weight:4,opacity:1,lineCap:"round",lineJoin:"round"}}/>}
           {route.map((node,i) => <CircleMarker key={i} center={node} radius={i===0 || i===route.length-1 ? 5 : 3.5} pathOptions={{color:"#F2EBDD",weight:1.5,fillColor:"#F2EBDD",fillOpacity:1}}/>)}
         </MapContainer> : <div className="map-empty"><span>MAP VIEW</span><p>{health ? "Choose an evaluation trip and reconstruct its route." : "Waiting for the inference API."}</p></div>}
@@ -84,7 +81,6 @@ export default function App() {
           <span><i className="legend-line selected"/>Selected route</span>
           <span><i className="legend-node"/>Route nodes</span>
           <span><i className="legend-line unused"/>Other roads</span>
-          <span><i className="legend-line observed"/>GPS trace</span>
         </div>
         {result && <span className="result-meta">{route.length} route nodes{result.inference_time_ms != null ? ` · ${Math.round(result.inference_time_ms)} ms` : ""}</span>}
       </footer>
