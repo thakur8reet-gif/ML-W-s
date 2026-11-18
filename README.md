@@ -84,7 +84,8 @@ GPS row indices to route indices.
 - [x] Dataset audit implementation
 - [x] Validated trip data reader
 - [ ] Execute audit and inspect data-quality findings
-- [ ] Exploratory analysis and map visualization
+- [x] Implement trip-level exploratory analysis and reference-route map generation
+- [ ] Execute EDA locally and inspect generated summaries/maps
 - [ ] Metric-coordinate road geometry and candidate generation
 - [ ] Validated GPS-to-route supervision/alignment
 - [ ] Five-model comparison with trip-grouped validation
